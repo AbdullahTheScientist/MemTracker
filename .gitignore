@@ -5,6 +5,9 @@ __pycache__/
 
 # C extensions
 *.so
+yolov8m.py
+yolov8n.pt
+uploads/
 
 # Distribution / packaging
 .Python
