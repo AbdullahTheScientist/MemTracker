@@ -13,7 +13,7 @@ from database import store_event_into_db, store_track_into_db
 # ==============================
 # Paths
 # ==============================
-input_video = "uploads/input_video.mp4"
+input_video = "input_video.mp4"
 output_video = "output_tracked.avi"
 
 prompts = [
