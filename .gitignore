@@ -7,6 +7,7 @@ __pycache__/
 *.so
 yolov8m.py
 yolov8n.pt
+yolov8m.pt
 uploads/
 
 # Distribution / packaging
