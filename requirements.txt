@@ -1,0 +1,5 @@
+torch
+ultralytics
+cv2
+transformers
+PIL
