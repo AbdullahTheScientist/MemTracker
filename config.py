@@ -1,7 +1,7 @@
 # config.py
 
-INPUT_VIDEO = "input_video.mp4"
-OUTPUT_VIDEO = "output_tracked.avi"
+INPUT_VIDEO = "input/input_video.mp4"
+OUTPUT_VIDEO = "output/output_tracked.avi"
 
 YOLO_MODEL = "yolov8n.pt"
 CLIP_MODEL_NAME = "openai/clip-vit-base-patch32"

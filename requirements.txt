@@ -3,3 +3,11 @@ ultralytics
 cv2
 transformers
 PIL
+pydantic
+numpy
+supervision
+sqlite3
+groq
+os
+json
+pickle
