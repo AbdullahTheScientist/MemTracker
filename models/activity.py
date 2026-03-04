@@ -3,16 +3,16 @@ import numpy as np
 import cv2
 from PIL import Image
 from transformers import CLIPProcessor, CLIPModel
-from config import CLIP_MODEL_NAME, DEVICE, PROMPTS
+from config import CLIP_MODEL_NAME, PROMPTS
 
-class ActivityRecognizer:
+class ActivityClassifier:
     def __init__(self):
         self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
         self.model = CLIPModel.from_pretrained(CLIP_MODEL_NAME).to(self.device)
         self.processor = CLIPProcessor.from_pretrained(CLIP_MODEL_NAME)
 
     def classify(self, frame, bbox):
-        x1, y1, x2, y2 = bbox
+        x1, y1, x2, y2 = map(int,bbox)
         crop = frame[y1:y2, x1:x2]
 
         if crop.size == 0:
