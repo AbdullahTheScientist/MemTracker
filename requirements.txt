@@ -4,10 +4,11 @@ python-multipart
 ultralytics
 opencv-python-headless
 sqlalchemy
-torch
+# torch is installed separately in Dockerfile as CPU-only build
 transformers
 pillow
 pydantic
 numpy
 supervision
 groq
+python-dotenv
