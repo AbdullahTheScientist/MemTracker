@@ -26,6 +26,7 @@ RUN pip install --no-cache-dir \
 # Install remaining dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
+RUN python -c "from transformers import CLIPModel, CLIPProcessor; CLIPModel.from_pretrained('openai/clip-vit-base-patch32'); CLIPProcessor.from_pretrained('openai/clip-vit-base-patch32')"
 COPY . .
 
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
