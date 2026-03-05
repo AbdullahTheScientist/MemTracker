@@ -9,6 +9,10 @@ yolov8m.py
 yolov8n.pt
 yolov8m.pt
 uploads/
+tracking.db
+input/
+output/
+outputs/
 
 # Distribution / packaging
 .Python
