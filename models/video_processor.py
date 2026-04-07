@@ -95,7 +95,7 @@ class RTSPVideoProcessor:
 
                         self._tracker_manager.update(track_id, frame_no, activity)
 
-                        # ✅ Fixed: store every event in DB
+                        # store every event in DB
                         store_event_into_db(
                             track_id=track_id,
                             activity=activity,
