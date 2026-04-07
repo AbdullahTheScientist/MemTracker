@@ -1,4 +1,3 @@
 from .activity import ActivityClassifier
-from .video_processor import VideoProcessor
-from .tracker import TrackManager
+from .video_processor import RTSPVideoProcessor, FileVideoProcessor
 from .detections import PersonDetector

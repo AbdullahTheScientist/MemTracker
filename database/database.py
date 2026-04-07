@@ -1,98 +1,78 @@
 import sqlite3
 from datetime import datetime
-import json
 
-db_path = "tracking.db"
+DB_PATH = "tracking.db"
 
-conn = sqlite3.connect(db_path)
-cursor = conn.cursor()
+
+def get_conn():
+    """Always open a fresh connection — safe to call from any thread."""
+    return sqlite3.connect(DB_PATH, check_same_thread=False)
+
 
 # -------------------------
 # CREATE TABLES
 # -------------------------
 def create_db():
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS events (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            timestamp DATETIME NOT NULL,
-            activity TEXT NOT NULL,
-            track_id INTEGER,
-            details TEXT,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        )
-    """)
+    conn = get_conn()
+    cursor = conn.cursor()
 
     cursor.execute("""
-        CREATE TABLE IF NOT EXISTS tracks (
-            track_id INTEGER PRIMARY KEY,
-            first_seen DATETIME NOT NULL,
-            last_seen DATETIME NOT NULL,
-            is_active BOOLEAN DEFAULT 1,
-            attributes TEXT
+        CREATE TABLE IF NOT EXISTS events (
+            id        INTEGER PRIMARY KEY AUTOINCREMENT,
+            track_id  INTEGER,
+            activity  TEXT NOT NULL,
+            timestamp TEXT DEFAULT (strftime('%H:%M:%S', 'now'))
         )
     """)
 
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS chat_history (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            role TEXT NOT NULL,
-            message TEXT NOT NULL,
-            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+            id               INTEGER PRIMARY KEY AUTOINCREMENT,
+            role             TEXT NOT NULL,
+            message          TEXT NOT NULL,
+            timestamp        DATETIME DEFAULT CURRENT_TIMESTAMP,
             event_references TEXT
         )
     """)
 
-def store_event_into_db(timestamp, track_id=None, activity=None, created_at=None):
-    create_db()
-    cursor.execute("""
-        INSERT INTO events (timestamp, activity, track_id, created_at)
-        VALUES (?, ?, ?, ?)
-    """, (
-        timestamp,
-        activity,
-        track_id,
-        created_at
-    ))
     conn.commit()
+    conn.close()
+    print("✅ Database tables ensured.")
 
-def store_track_into_db(track_id, first_seen, last_seen, is_active=True, attributes=None):
-    create_db()
+
+def store_event_into_db(timestamp, activity, track_id=None):
+    """Insert one tracking event. Auto-creates tables if they don't exist yet."""
+    conn = get_conn()
+    cursor = conn.cursor()
+
+    # Safety: make sure the table exists (idempotent, cheap)
     cursor.execute("""
-        INSERT OR REPLACE INTO tracks (track_id, first_seen, last_seen, is_active, attributes)
-        VALUES (?, ?, ?, ?, ?)
-    """, (
-        track_id,
-        first_seen,
-        last_seen,
-        is_active,
-        json.dumps(attributes) if attributes else None
-    ))
+        CREATE TABLE IF NOT EXISTS events (
+            id        INTEGER PRIMARY KEY AUTOINCREMENT,
+            track_id  INTEGER,
+            activity  TEXT NOT NULL,
+            timestamp TEXT DEFAULT (strftime('%H:%M:%S', 'now'))
+        )
+    """)
+
+    cursor.execute(
+        "INSERT INTO events (track_id, activity, timestamp) VALUES (?, ?, ?)",
+        (track_id, activity, timestamp),
+    )
+
     conn.commit()
+    conn.close()
 
-# -------------------------
 
-# if __name__ == "__main__":
-    # # Example usage
-    # store_event_into_db(
-    #     timestamp=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-    #     track_id=1,
-    #     activity="Walking",
-    #     created_at=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    # )
-    # store_track_into_db(
-    #     track_id=1,
-    #     first_seen=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-    #     last_seen=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-    #     is_active=True,
-    #     attributes={"age": "30-40", "gender": "male"}
-    # )
+def get_all_events():
+    conn = get_conn()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM events ORDER BY id DESC")
+    rows = cursor.fetchall()
+    columns = [d[0] for d in cursor.description]
+    conn.close()
+    return [dict(zip(columns, row)) for row in rows]
 
-    # cursor.execute("SELECT * FROM events")
-    # print("\n---- EVENTS ----")
-    # for row in cursor.fetchall():
-    #     print(row)
 
-    # cursor.execute("SELECT * FROM tracks")
-    # print("\n---- TRACKS ----")
-    # for row in cursor.fetchall():
-    #     print(row)
+# Auto-create on import so the tables always exist when the app starts
+create_db()
