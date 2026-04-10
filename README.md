@@ -1,11 +1,5 @@
 <div align="center">
 
-<a href="https://www.youtube.com/watch?v=O3zD5Zgin-Q" target="_blank">
-  <img src="https://img.youtube.com/vi/O3zD5Zgin-Q/maxresdefault.jpg"
-       alt="Watch MemTracker Demo"
-       style="width:100%;max-width:720px;border-radius:12px;border:1px solid #30363d;display:block;margin:0 auto 24px;"/>
-</a>
-
 <img src="https://img.shields.io/badge/MemTracker-AI%20Surveillance-7F77DD?style=for-the-badge&logo=eye&logoColor=white" alt="MemTracker" height="32"/>
 
 <h1>MemTracker</h1>
@@ -21,6 +15,19 @@
   <img src="https://img.shields.io/badge/RunPod-RTX%203090-7B2FBE?style=flat-square"/>
   <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square"/>
 </p>
+
+<br/>
+
+<h3>🎬 Demo Video</h3>
+<p><em>Click the thumbnail below to watch the full demo on YouTube</em></p>
+
+<a href="https://www.youtube.com/watch?v=O3zD5Zgin-Q" target="_blank">
+  <img src="https://img.youtube.com/vi/O3zD5Zgin-Q/maxresdefault.jpg"
+       alt="▶ Watch MemTracker Demo on YouTube"
+       style="width:100%;max-width:720px;border-radius:12px;border:1px solid #30363d;display:block;margin:0 auto;"/>
+</a>
+
+<p><sub>▶ Opens in YouTube</sub></p>
 
 </div>
 
