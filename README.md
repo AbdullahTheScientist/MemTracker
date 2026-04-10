@@ -201,12 +201,9 @@ memtracker/
 │   ├── tracker.py          # TrackManager — per-person timeline builder
 │   └── video_processor.py  # RTSPVideoProcessor + FileVideoProcessor
 │
-├── db.py                   # Standalone CLI tool to inspect the database
-├── index.html              # Frontend UI served at GET /
-│
-├── input/                  # (optional) Place input videos here
-├── output/                 # (optional) Processed video output
-└── uploads/                # Auto-created — stores uploaded video files
+├── Frontend/
+│   ├── index.html             # Frontend UI served at GET /
+
 ```
 
 ---
@@ -301,8 +298,8 @@ Step 4 — LLaMA generates analyst answer
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/yourname/memtracker.git
-cd memtracker
+git clone https://github.com/AbdullahTheScientist/MemTracker.git
+cd MemTracker
 ```
 
 ### 2. Create a virtual environment
@@ -349,23 +346,6 @@ GROQ_API_KEY=your_groq_api_key_here
 RTSP_URL=rtsp://192.168.1.100:554/stream    # optional — only for live camera
 ```
 
-### 5. Create required directories
-
-```bash
-mkdir -p uploads output input
-```
-
-### 6. Fix the import (important)
-
-In `app.py` line 16, change:
-```python
-# Wrong — "models" package needs the submodule path
-from models import RTSPVideoProcessor, FileVideoProcessor
-
-# Correct
-from models.video_processor import RTSPVideoProcessor, FileVideoProcessor
-```
-
 ---
 
 ## Configuration
@@ -375,8 +355,6 @@ All model settings and activity prompts are controlled in `config.py`:
 ```python
 # config.py
 
-INPUT_VIDEO  = "input/input_video.mp4"   # default input path (not used by API)
-OUTPUT_VIDEO = "output/output_tracked.avi"
 DEVICE       = "cpu"                      # change to "cuda" for GPU
 
 YOLO_MODEL      = "yolov8n.pt"           # nano=fast, yolov8s/m/l=more accurate
@@ -428,15 +406,6 @@ Open your browser at `http://localhost:8000` to see the frontend UI.
 
 Interactive API docs are at `http://localhost:8000/docs`.
 
-### Inspect the database (CLI)
-
-```bash
-python db.py
-```
-
-This prints a formatted table of all events directly in your terminal.
-
----
 
 ## API Reference
 
@@ -730,11 +699,7 @@ CREATE TABLE chat_history (
 );
 ```
 
-**Inspect the database from CLI:**
 
-```bash
-python db.py
-```
 
 Output example:
 ```
@@ -811,7 +776,6 @@ pip install opencv-python-headless
 ```bash
 cat > /workspace/memtracker/.env << 'EOF'
 GROQ_API_KEY=your_groq_api_key_here
-RTSP_URL=rtsp://your_camera_ip/stream
 EOF
 ```
 
@@ -847,7 +811,8 @@ https://YOUR_POD_ID-8000.proxy.runpod.net/events    ← Live events
 
 In RunPod pod settings → Docker Command, set:
 ```bash
-cd /workspace/memtracker && uvicorn app:app --host 0.0.0.0 --port 8000
+bash -c "pip install -q --upgrade torch torchvision --index-url https://download.pytorch.org/whl/cu124 && pip install -q fastapi uvicorn python-multipart groq python-dotenv ultralytics supervision transformers accelerate opencv-python-headless && cd /workspace/MemTracker && git pull && python -m uvicorn app:app --host 0.0.0.0 --port 8000; sleep infinity"
+
 ```
 
 > **Cost tip:** An RTX 3090 on RunPod costs ~$0.44/hr. Use **Stop** (not Delete) when not in use — your `/workspace` volume is preserved and not charged at GPU rate.
@@ -908,24 +873,6 @@ cd /workspace/memtracker && uvicorn app:app --host 0.0.0.0 --port 8000
 <td>SSH back in, re-run <code>screen -S memtracker</code> + <code>uvicorn</code></td>
 </tr>
 </table>
-
----
-
-## Performance Notes
-
-| Hardware | Detection FPS | CLIP FPS | Notes |
-|----------|--------------|----------|-------|
-| RTX 3090 | ~60 fps | ~30 fps | CUDA, production |
-| RTX 3080 | ~50 fps | ~25 fps | CUDA |
-| CPU only | ~3-5 fps | ~2-3 fps | Not recommended for live |
-
-The `FileVideoProcessor` processes every 3rd frame by default (`process_every_n=3`) to balance speed and accuracy. Adjust in `app.py`:
-
-```python
-processor = FileVideoProcessor(video_path=save_path, process_every_n=3)
-#                                                           ↑ lower = more accurate, slower
-#                                                             higher = faster, less accurate
-```
 
 ---
 
