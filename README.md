@@ -1,14 +1,16 @@
 <div align="center">
-<!-- https://youtu.be/GgYSvX-0dCc -->
 
-  [![Watch the video](https://img.youtube.com/vi/GgYSvX-0dCc/0.jpg)](https://www.youtube.com/watch?v=GgYSvX-0dCc)
-<br/>
+<a href="https://www.youtube.com/watch?v=O3zD5Zgin-Q" target="_blank">
+  <img src="https://img.youtube.com/vi/O3zD5Zgin-Q/maxresdefault.jpg"
+       alt="Watch MemTracker Demo"
+       style="width:100%;max-width:720px;border-radius:12px;border:1px solid #30363d;display:block;margin:0 auto 24px;"/>
+</a>
 
-<img src="https://img.shields.io/badge/MemTracker-AI%20Surveillance-7F77DD?style=for-the-badge&logo=eye&logoColor=white" alt="MemTracker"/>
+<img src="https://img.shields.io/badge/MemTracker-AI%20Surveillance-7F77DD?style=for-the-badge&logo=eye&logoColor=white" alt="MemTracker" height="32"/>
 
 <h1>MemTracker</h1>
 
-<p><strong>Real-time AI-powered person tracking, activity recognition, and intelligent surveillance analysis</strong></p>
+<p><em>Real-time AI-powered person tracking, activity recognition, and intelligent surveillance analysis</em></p>
 
 <p>
   <img src="https://img.shields.io/badge/Python-3.10+-3776AB?style=flat-square&logo=python&logoColor=white"/>
@@ -19,8 +21,6 @@
   <img src="https://img.shields.io/badge/RunPod-RTX%203090-7B2FBE?style=flat-square"/>
   <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square"/>
 </p>
-
-<br/>
 
 </div>
 
