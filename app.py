@@ -29,7 +29,7 @@ print("✅ CLIP ready.")
 # ─────────────────────────────────────────────
 # Config
 # ─────────────────────────────────────────────
-RTSP_URL   = os.environ.get("RTSP_URL", "rtsp://localhost:8554/mystream")
+RTSP_URL   = os.environ.get("RTSP_URL", "https://192.168.100.101:8080")
 UPLOAD_DIR = "uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
