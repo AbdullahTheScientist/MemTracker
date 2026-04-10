@@ -1,5 +1,7 @@
 <div align="center">
+<!-- https://youtu.be/GgYSvX-0dCc -->
 
+  [![Watch the video](https://img.youtube.com/vi/GgYSvX-0dCc/0.jpg)](https://www.youtube.com/watch?v=GgYSvX-0dCc)
 <br/>
 
 <img src="https://img.shields.io/badge/MemTracker-AI%20Surveillance-7F77DD?style=for-the-badge&logo=eye&logoColor=white" alt="MemTracker"/>
